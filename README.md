@@ -22,7 +22,7 @@ It provides a unified web platform connecting admins, donors, and hospital staff
 
 | Layer      | Technology                            |
 |-----------|----------------------------------------|
-| Frontend  | React / HTML / CSS / JavaScript       |
+| Frontend  | React , HTML , CSS , JavaScript       |
 | Backend   | Laravel                               |
 | Database  | MySQL                                 |
 | Rendering | Server Side Rendering                 |
