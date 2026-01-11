@@ -28,6 +28,9 @@ It provides a unified web platform connecting admins, donors, and hospital staff
 | Rendering | Server Side Rendering                 |
 
 
+## Figma prototype
+www.figma.com/proto/dCJ7SxhbsOUaWbDFfgdokb/BloodLink
+
 
 ## Core Features
 
