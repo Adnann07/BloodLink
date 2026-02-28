@@ -1,0 +1,46 @@
+WHAT HAS BEEN DONE FOR YOU
+Files created or edited:
+
+app/Models/User.php — Updated with role, phone, address fields and all relationships to donor profile, hospital profile, donations, blood requests, events, volunteer
+app/Http/Controllers/AuthController.php — New file. Handles register, login, logout, me endpoints
+app/Http/Services/AuthService.php — New file. All auth logic, creates user, creates donor or hospital profile based on role, returns token
+routes/api.php — Auth routes added with Sanctum middleware protecting logout and me
+schema.sql — Full database schema with all tables (users, donor_profiles, hospital_profiles, blood_inventory, donations, blood_requests, donation_events, event_registrations, volunteers, volunteer_assignments, contact_submissions, personal_access_tokens)
+api-routes.md — Full API routes plan for all features as reference
+
+
+===================================================================================
+
+
+WHAT YOU NEED TO DO FOR THE CHECKPOINT
+Step 1 — Setup
+
+Install Docker Desktop
+Run the project using docker-compose
+Import schema.sql into the database
+
+Step 2 — Create These Two Models
+Both are needed because AuthService creates donor/hospital profiles during registration. Without them Laravel will throw an error.
+Create app/Models/DonorProfile.php and app/Models/HospitalProfile.php 
+Step 3 — Test using Postman
+Test these 4 endpoints:
+
+POST /api/register — with name, email, password, role, and role specific fields
+POST /api/login — with email and password, returns token
+GET /api/me — send token in Authorization header
+POST /api/logout — send token in Authorization header
+
+
+CONNECTING AUTH BACKEND WITH FRONTEND
+The frontend login and registration pages will be in the client folder. Once you have the Laravel server running on http://localhost:8000, the frontend will send requests to your API.
+
+================================================================
+
+
+
+WHAT'S LEFT AFTER AUTH
+
+Create remaining Models for all features
+Create Controllers and Services for Donors, Hospitals, Inventory, Donations, Blood Requests, Events, Volunteers, Contact
+Complete routes/api.php with all remaining routes from api-routes.md
+Business logic — auto update inventory when donation is recorded, deduct units when request is fulfilled, calculate next eligible donation date (+90 days)
