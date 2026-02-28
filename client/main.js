@@ -74,11 +74,11 @@ async function askGroq(userMessage) {
         'Authorization': `Bearer ${GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'llama3-8b-8192',
         messages: [
           {
             role: 'system',
-            content: 'You are a helpful blood donation assistant for BloodLink. Answer questions in the same language the user writes in — if they write in Bangla, reply in Bangla; if they write in English, reply in English. Only answer questions related to blood donation, eligibility, blood types, donation process, and related health topics. Keep answers short and clear.'
+            content: 'You are a helpful blood donation assistant for BloodLink. Only answer questions related to blood donation, eligibility, blood types, donation process, and related health topics. Keep answers short and clear.'
           },
           {
             role: 'user',
@@ -115,4 +115,145 @@ function sendChip(btn) {
 
 function handleKey(e) {
   if (e.key === 'Enter') sendMessage();
+}
+
+// Auth
+const API_URL = 'http://localhost:8000/api';
+
+function switchTab(tab) {
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  const tabs = document.querySelectorAll('.auth-tab');
+
+  if (tab === 'login') {
+    loginForm.classList.remove('hidden');
+    registerForm.classList.add('hidden');
+    tabs[0].classList.add('active');
+    tabs[1].classList.remove('active');
+  } else {
+    registerForm.classList.remove('hidden');
+    loginForm.classList.add('hidden');
+    tabs[1].classList.add('active');
+    tabs[0].classList.remove('active');
+  }
+}
+
+function handleRoleChange() {
+  const role = document.getElementById('regRole').value;
+  const donorFields = document.getElementById('donorFields');
+  const hospitalFields = document.getElementById('hospitalFields');
+
+  donorFields.classList.add('hidden');
+  hospitalFields.classList.add('hidden');
+
+  if (role === 'donor') donorFields.classList.remove('hidden');
+  if (role === 'hospital') hospitalFields.classList.remove('hidden');
+}
+
+async function handleLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const errorEl = document.getElementById('loginError');
+
+  errorEl.textContent = '';
+
+  if (!email || !password) {
+    errorEl.textContent = 'Please fill in all fields.';
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      errorEl.textContent = data.message || 'Login failed. Please try again.';
+      return;
+    }
+
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+
+    // Redirect based on role
+    const role = data.user.role;
+    if (role === 'admin') window.location.href = 'admin-dashboard.html';
+    else if (role === 'donor') window.location.href = 'donor-dashboard.html';
+    else if (role === 'hospital') window.location.href = 'hospital-dashboard.html';
+
+  } catch (error) {
+    errorEl.textContent = 'Something went wrong. Please try again.';
+  }
+}
+
+async function handleRegister() {
+  const errorEl = document.getElementById('registerError');
+  errorEl.textContent = '';
+
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const role = document.getElementById('regRole').value;
+
+  if (!name || !email || !password || !role) {
+    errorEl.textContent = 'Please fill in all required fields.';
+    return;
+  }
+
+  const body = { name, email, password, role, phone };
+
+  if (role === 'donor') {
+    body.blood_group = document.getElementById('regBloodGroup').value;
+    body.date_of_birth = document.getElementById('regDob').value;
+    body.gender = document.getElementById('regGender').value;
+    body.weight_kg = document.getElementById('regWeight').value;
+
+    if (!body.blood_group || !body.date_of_birth || !body.gender) {
+      errorEl.textContent = 'Please fill in all donor fields.';
+      return;
+    }
+  }
+
+  if (role === 'hospital') {
+    body.hospital_name = document.getElementById('regHospitalName').value.trim();
+    body.city = document.getElementById('regCity').value.trim();
+    body.license_number = document.getElementById('regLicense').value.trim();
+
+    if (!body.hospital_name || !body.city) {
+      errorEl.textContent = 'Please fill in all hospital fields.';
+      return;
+    }
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      errorEl.textContent = data.message || 'Registration failed. Please try again.';
+      return;
+    }
+
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+
+    // Redirect based on role
+    const userRole = data.user.role;
+    if (userRole === 'admin') window.location.href = 'admin-dashboard.html';
+    else if (userRole === 'donor') window.location.href = 'donor-dashboard.html';
+    else if (userRole === 'hospital') window.location.href = 'hospital-dashboard.html';
+
+  } catch (error) {
+    errorEl.textContent = 'Something went wrong. Please try again.';
+  }
 }
