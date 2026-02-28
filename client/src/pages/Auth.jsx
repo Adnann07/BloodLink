@@ -3,7 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Navbar from '../components/Navbar'
 
-const API_URL = 'http://localhost:8000/api'
+const api = axios.create({
+  baseURL: 'http://localhost:8000/api',
+  withCredentials: true, // Crucial for Laravel Sanctum
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+});
 
 function Auth() {
   const navigate = useNavigate()
@@ -55,6 +62,7 @@ function Auth() {
       return
     }
     try {
+      await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
       const res = await axios.post(`${API_URL}/register`, regData)
       localStorage.setItem('token', res.data.token)
       localStorage.setItem('user', JSON.stringify(res.data.user))
