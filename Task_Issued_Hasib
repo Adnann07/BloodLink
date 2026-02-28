@@ -21,7 +21,7 @@ Import schema.sql into the database
 
 Step 2 — Create These Two Models
 Both are needed because AuthService creates donor/hospital profiles during registration. Without them Laravel will throw an error.
-Create app/Models/DonorProfile.php and app/Models/HospitalProfile.php — the code for both is in HASIB_TASKS.md in the repo root.
+Create app/Models/DonorProfile.php and app/Models/HospitalProfile.php 
 Step 3 — Test using Postman
 Test these 4 endpoints:
 
