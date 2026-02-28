@@ -1,0 +1,154 @@
+# BloodLink Backend – Hasib's Task Sheet
+
+---
+
+## What Has Been Done For You
+
+### Files Created / Edited
+
+| File | Path | What it does |
+|------|------|--------------|
+| User.php | `app/Models/User.php` | Updated with role, phone, address fields and all relationships |
+| AuthController.php | `app/Http/Controllers/AuthController.php` | Handles register, login, logout, me endpoints |
+| AuthService.php | `app/Http/Services/AuthService.php` | All auth logic — creates user, donor profile, hospital profile, returns token |
+| api.php | `routes/api.php` | Auth routes set up with Sanctum middleware |
+| schema.sql | `schema.sql` | Full database schema with all tables |
+| api-routes.md | `api-routes.md` | Full API routes plan for all features |
+
+---
+
+## What You Need To Do
+
+### Step 1 — Setup
+
+- Install Docker Desktop
+- Run the project using docker-compose (to be set up)
+- Import schema.sql into the database
+
+### Step 2 — Create These Two Models (Required for Auth)
+
+These are needed because AuthService creates donor/hospital profiles on registration.
+
+**`app/Models/DonorProfile.php`**
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class DonorProfile extends Model
+{
+    protected $fillable = [
+        'user_id',
+        'blood_group',
+        'date_of_birth',
+        'gender',
+        'weight_kg',
+        'last_donation_date',
+        'next_eligible_date',
+        'is_eligible',
+        'medical_notes',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+```
+
+**`app/Models/HospitalProfile.php`**
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class HospitalProfile extends Model
+{
+    protected $fillable = [
+        'user_id',
+        'hospital_name',
+        'license_number',
+        'city',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+```
+
+### Step 3 — Test Auth Endpoints Using Postman
+
+**Register as Donor**
+```
+POST http://localhost:8000/api/register
+Content-Type: application/json
+
+{
+    "name": "Test Donor",
+    "email": "donor@test.com",
+    "password": "password123",
+    "role": "donor",
+    "blood_group": "A+",
+    "date_of_birth": "1995-05-10",
+    "gender": "male"
+}
+```
+
+**Register as Hospital**
+```
+POST http://localhost:8000/api/register
+Content-Type: application/json
+
+{
+    "name": "Test Hospital",
+    "email": "hospital@test.com",
+    "password": "password123",
+    "role": "hospital",
+    "hospital_name": "City Hospital",
+    "city": "Dhaka"
+}
+```
+
+**Login**
+```
+POST http://localhost:8000/api/login
+Content-Type: application/json
+
+{
+    "email": "donor@test.com",
+    "password": "password123"
+}
+```
+
+**Get Current User (requires token)**
+```
+GET http://localhost:8000/api/me
+Authorization: Bearer YOUR_TOKEN_HERE
+```
+
+**Logout (requires token)**
+```
+POST http://localhost:8000/api/logout
+Authorization: Bearer YOUR_TOKEN_HERE
+```
+
+---
+
+## What's Left After Auth (Future Tasks)
+
+- Create remaining Models (BloodInventory, Donation, BloodRequest, DonationEvent, EventRegistration, Volunteer, VolunteerAssignment, ContactSubmission)
+- Create Controllers and Services for each feature
+- Complete routes/api.php with all remaining routes
+- Business logic (auto-update inventory on donation, deduct units on fulfilled request, calculate next eligible date)
+
+---
+
+## Reference
+
+Full API routes plan is in `api-routes.md` in the root of the project.
