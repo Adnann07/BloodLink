@@ -30,18 +30,18 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof BadRequestException) {
+        if ($request->is('api/*')) {
             return response()->json([
+                'error' => true,
                 'message' => $exception->getMessage(),
-            ], 400);
+                'debug' => config('app.debug') ? [
+                    'file' => $exception->getFile(),
+                    'line' => $exception->getLine(),
+                ] : null
+            ], $exception instanceof \Illuminate\Validation\ValidationException ? 422 : 500);
         }
 
-        // Default response for unexpected exceptions
-        return response()->json([
-            'error' => true,
-            'message' => 'An unexpected error occurred',
-        ], 500);
-
+        return parent::render($request, $exception);
     }
 
 }
