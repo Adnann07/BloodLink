@@ -17,9 +17,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
-        'phone',
-        'address',
     ];
 
     /**
@@ -32,33 +29,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function donorProfile()
+    public function posts()
     {
-        return $this->hasOne(DonorProfile::class);
-    }
-
-    public function hospitalProfile()
-    {
-        return $this->hasOne(HospitalProfile::class);
-    }
-
-    public function donations()
-    {
-        return $this->hasMany(Donation::class, 'donor_id');
-    }
-
-    public function bloodRequests()
-    {
-        return $this->hasMany(BloodRequest::class, 'hospital_id');
-    }
-
-    public function eventRegistrations()
-    {
-        return $this->hasMany(EventRegistration::class, 'donor_id');
-    }
-
-    public function volunteer()
-    {
-        return $this->hasOne(Volunteer::class);
+        return $this->hasMany(Post::class); // One user has many posts
     }
 }
