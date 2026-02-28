@@ -31,6 +31,8 @@ GET /api/me — send token in Authorization header
 POST /api/logout — send token in Authorization header
 
 
+CONNECTING AUTH BACKEND WITH FRONTEND
+The frontend login and registration pages will be in the client folder. Once you have the Laravel server running on http://localhost:8000, the frontend will send requests to your API.
 
 ================================================================
 
