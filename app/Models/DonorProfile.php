@@ -8,9 +8,10 @@ class DonorProfile extends Model
 {
     protected $fillable = [
         'user_id', 
-        'blood_type', 
-        'last_donation_date', 
-        'is_available'
+        'blood_group', 
+        'date_of_birth', 
+        'gender',
+        'weight_kg'
     ];
 
     public function user()

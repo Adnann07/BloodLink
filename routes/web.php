@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Sanctum CSRF route
+Route::get('/sanctum/csrf-cookie', function () {
+    return response()->noContent();
+});
