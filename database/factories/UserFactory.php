@@ -27,8 +27,13 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'email_verification_token' => null,
+            'is_verified' => true,
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'role' => fake()->randomElement(['donor', 'hospital']),
+            'phone' => fake()->optional()->phoneNumber(),
+            'address' => fake()->optional()->address(),
         ];
     }
 
@@ -39,6 +44,28 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+            'email_verification_token' => Str::random(6),
+            'is_verified' => false,
+        ]);
+    }
+
+    /**
+     * Create a donor user
+     */
+    public function donor(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'donor',
+        ]);
+    }
+
+    /**
+     * Create a hospital user
+     */
+    public function hospital(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'hospital',
         ]);
     }
 }
