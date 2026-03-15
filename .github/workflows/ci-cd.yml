@@ -120,7 +120,7 @@ jobs:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: ${{ secrets.DOCKER_USERNAME != '' && secrets.DOCKER_USERNAME + '/bloodlink:latest' || 'ghcr.io/${{ github.repository }}:latest' }}
+        image-ref: ${{ secrets.DOCKER_USERNAME != '' && format('{0}/bloodlink:latest', secrets.DOCKER_USERNAME) || format('ghcr.io/{0}:latest', github.repository) }}
         format: 'sarif'
         output: 'trivy-results.sarif'
 
