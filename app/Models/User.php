@@ -20,6 +20,9 @@ class User extends Authenticatable
         'role',
         'phone',
         'address',
+        'email_verified_at',
+        'email_verification_token',
+        'is_verified',
     ];
 
     /**
@@ -30,6 +33,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'email_verification_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'is_verified' => 'boolean',
     ];
 
     public function donorProfile()

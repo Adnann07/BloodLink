@@ -22,32 +22,32 @@ class AuthController extends Controller
         try {
             // Base validation for all users
             $rules = [
-                'name'           => 'required|string',
-                'email'          => 'required|email|unique:users',
-                'password'       => 'required|min:6',
-                'role'           => 'required|in:donor,hospital',
-                'phone'          => 'nullable|string',
-                'address'        => 'nullable|string',
+                'name'           => 'required|string|max:255',
+                'email'          => 'required|email|max:255|unique:users',
+                'password'       => 'required|string|min:6',
+                'role'           => 'required|string|in:donor,hospital',
+                'phone'          => 'nullable|string|max:20',
+                'address'        => 'nullable|string|max:500',
             ];
             
             // Add donor-specific validation
             if ($request->role === 'donor') {
-                $rules['blood_group'] = 'required|in:A+,A-,B+,B-,AB+,AB-,O+,O-';
-                $rules['date_of_birth'] = 'required|date';
-                $rules['gender'] = 'required|in:male,female,other';
-                $rules['weight_kg'] = 'nullable|numeric';
+                $rules['blood_group'] = 'required|string|in:A+,A-,B+,B-,AB+,AB-,O+,O-';
+                $rules['date_of_birth'] = 'required|date|before:today';
+                $rules['gender'] = 'required|string|in:male,female,other';
+                $rules['weight_kg'] = 'nullable|numeric|min:30|max:300';
             }
             
             // Add hospital-specific validation
             if ($request->role === 'hospital') {
-                $rules['hospital_name'] = 'required|string';
-                $rules['license_number'] = 'nullable|string';
-                $rules['city'] = 'nullable|string';
+                $rules['hospital_name'] = 'required|string|max:255';
+                $rules['license_number'] = 'nullable|string|max:255';
+                $rules['city'] = 'nullable|string|max:100';
             }
             
             $validated = $request->validate($rules);
 
-            return $this->authService->register($request->all());
+            return $this->authService->register($validated);
             
         } catch (\Exception $e) {
             return response()->json([
@@ -84,5 +84,30 @@ class AuthController extends Controller
     public function me(Request $request)
     {
         return $this->authService->me($request->user());
+    }
+
+    /**
+     * Verify email with OTP
+     */
+    public function verifyEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'otp' => 'required|digits:6',
+        ]);
+
+        return $this->authService->verifyEmail($request->all());
+    }
+
+    /**
+     * Resend OTP
+     */
+    public function resendOTP(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        return $this->authService->resendOTP($request->all());
     }
 }
