@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Navbar from '../components/Navbar'
 
+const API_URL = 'http://localhost:8000/api'
+
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: API_URL,
   withCredentials: true, // Crucial for Laravel Sanctum
   headers: {
     'Accept': 'application/json',
@@ -35,13 +37,10 @@ function Auth() {
       return
     }
     try {
-      const res = await axios.post(`${API_URL}/login`, loginData)
+      const res = await api.post('/login', loginData)
       localStorage.setItem('token', res.data.token)
       localStorage.setItem('user', JSON.stringify(res.data.user))
-      const role = res.data.user.role
-      if (role === 'admin') navigate('/admin-dashboard')
-      else if (role === 'donor') navigate('/donor-dashboard')
-      else if (role === 'hospital') navigate('/hospital-dashboard')
+      navigate('/dashboard')
     } catch (err) {
       setLoginError(err.response?.data?.message || 'Login failed. Please try again.')
     }
@@ -62,8 +61,9 @@ function Auth() {
       return
     }
     try {
-      await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
-      const res = await axios.post(`${API_URL}/register`, regData)
+      const res = await api.post('/register', regData)
+      console.log('Registration response:', res.data)
+      
       localStorage.setItem('token', res.data.token)
       localStorage.setItem('user', JSON.stringify(res.data.user))
       const role = res.data.user.role
@@ -71,7 +71,9 @@ function Auth() {
       else if (role === 'donor') navigate('/donor-dashboard')
       else if (role === 'hospital') navigate('/hospital-dashboard')
     } catch (err) {
-      setRegError(err.response?.data?.message || 'Registration failed. Please try again.')
+      console.error('Registration error:', err)
+      console.error('Response:', err.response)
+      setRegError(err.response?.data?.message || err.message || 'Registration failed. Please try again.')
     }
   }
 

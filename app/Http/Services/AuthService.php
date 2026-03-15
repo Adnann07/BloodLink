@@ -11,6 +11,8 @@ class AuthService
 {
     public function register(array $data)
     {
+        \Log::info('AuthService register called with data:', $data);
+        
         $user = User::create([
             'name'     => $data['name'],
             'email'    => $data['email'],
@@ -21,6 +23,17 @@ class AuthService
         ]);
 
         if ($user->role === 'donor') {
+            // Debug: return data to see what's received
+            if (empty($data['blood_group']) || empty($data['date_of_birth']) || empty($data['gender'])) {
+                return response()->json([
+                    'error' => 'Missing donor data',
+                    'received_data' => $data,
+                    'blood_group' => $data['blood_group'] ?? 'MISSING',
+                    'date_of_birth' => $data['date_of_birth'] ?? 'MISSING',
+                    'gender' => $data['gender'] ?? 'MISSING',
+                ], 422);
+            }
+            
             DonorProfile::create([
                 'user_id'       => $user->id,
                 'blood_group'   => $data['blood_group'],

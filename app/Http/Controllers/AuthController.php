@@ -19,23 +19,42 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $request->validate([
-            'name'           => 'required|string',
-            'email'          => 'required|email|unique:users',
-            'password'       => 'required|min:6',
-            'role'           => 'required|in:donor,hospital',
-            'phone'          => 'nullable|string',
-            'address'        => 'nullable|string',
-            'blood_group'    => 'required_if:role,donor|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
-            'date_of_birth'  => 'required_if:role,donor|date',
-            'gender'         => 'required_if:role,donor|in:male,female,other',
-            'weight_kg'      => 'nullable|numeric',
-            'hospital_name'  => 'required_if:role,hospital|string',
-            'license_number' => 'nullable|string',
-            'city'           => 'nullable|string',
-        ]);
+        try {
+            // Base validation for all users
+            $rules = [
+                'name'           => 'required|string',
+                'email'          => 'required|email|unique:users',
+                'password'       => 'required|min:6',
+                'role'           => 'required|in:donor,hospital',
+                'phone'          => 'nullable|string',
+                'address'        => 'nullable|string',
+            ];
+            
+            // Add donor-specific validation
+            if ($request->role === 'donor') {
+                $rules['blood_group'] = 'required|in:A+,A-,B+,B-,AB+,AB-,O+,O-';
+                $rules['date_of_birth'] = 'required|date';
+                $rules['gender'] = 'required|in:male,female,other';
+                $rules['weight_kg'] = 'nullable|numeric';
+            }
+            
+            // Add hospital-specific validation
+            if ($request->role === 'hospital') {
+                $rules['hospital_name'] = 'required|string';
+                $rules['license_number'] = 'nullable|string';
+                $rules['city'] = 'nullable|string';
+            }
+            
+            $validated = $request->validate($rules);
 
-        return $this->authService->register($request->all());
+            return $this->authService->register($request->all());
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Registration failed',
+                'message' => $e->getMessage()
+            ], 422);
+        }
     }
 
     /**
