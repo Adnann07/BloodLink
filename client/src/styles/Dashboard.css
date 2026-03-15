@@ -252,3 +252,160 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Hospital Dashboard Specific Styles */
+.blood-availability-card {
+  grid-column: span 2;
+}
+
+.blood-groups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.blood-group-item {
+  text-align: center;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s;
+}
+
+.blood-group-item:hover {
+  border-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+.blood-group-item .blood-type {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #c0392b;
+  margin-bottom: 0.5rem;
+}
+
+.blood-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.blood-stats span {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.blood-stats .available {
+  color: #27ae60;
+  font-weight: 600;
+}
+
+.blood-stats .recent {
+  color: #3498db;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #c0392b, #e74c3c);
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #a93226, #c0392b);
+  transform: scale(1.02);
+}
+
+.urgent-card {
+  grid-column: span 2;
+}
+
+.urgent-list {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.no-urgent {
+  color: #27ae60;
+  text-align: center;
+  padding: 2rem;
+  font-style: italic;
+}
+
+.urgent-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+
+.urgent-type {
+  background: #c0392b;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.urgent-units {
+  color: #666;
+  font-weight: 600;
+}
+
+.urgent-patient {
+  color: #333;
+  flex: 1;
+  margin: 0 1rem;
+}
+
+.btn-urgent {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.btn-urgent:hover {
+  background: #2ecc71;
+  transform: scale(1.05);
+}
+
+.blood-type-small {
+  background: #c0392b;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .blood-availability-card,
+  .urgent-card {
+    grid-column: span 1;
+  }
+  
+  .blood-groups-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .urgent-item {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .urgent-patient {
+    margin: 0;
+  }
+}

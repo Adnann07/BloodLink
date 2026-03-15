@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\HospitalDashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,10 +25,20 @@ Route::get('/test', function() {
 // Auth routes
 Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+Route::post('/verify-email', [AuthController::class, 'verifyEmail'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+Route::post('/resend-otp', [AuthController::class, 'resendOTP'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
+    
+    // Hospital Dashboard routes
+    Route::prefix('hospital')->group(function () {
+        Route::get('/dashboard', [HospitalDashboardController::class, 'index']);
+        Route::get('/profile', [HospitalDashboardController::class, 'profile']);
+        Route::put('/profile', [HospitalDashboardController::class, 'updateProfile']);
+        Route::post('/blood-request', [HospitalDashboardController::class, 'storeBloodRequest']);
+    });
 });
 
 // Dummy CRUD operations for items using UsersController

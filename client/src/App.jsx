@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Auth from './pages/Auth'
+import EmailVerification from './pages/EmailVerification'
 import AskAI from './pages/AskAI'
 import DonorDashboard from './pages/DonorDashboard'
+import HospitalDashboard from './pages/HospitalDashboard'
 
 function App() {
   return (
@@ -10,8 +12,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/verify-email" element={<EmailVerification />} />
         <Route path="/askai" element={<AskAI />} />
         <Route path="/dashboard" element={<DonorDashboard />} />
+        <Route path="/hospital/dashboard" element={<HospitalDashboard />} />
       </Routes>
     </BrowserRouter>
   )

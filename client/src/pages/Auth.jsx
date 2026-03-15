@@ -38,9 +38,22 @@ function Auth() {
     }
     try {
       const res = await api.post('/login', loginData)
+      
+      if (res.data.requires_verification) {
+        // Store email for verification page
+        localStorage.setItem('pending_verification_email', loginData.email)
+        setLoginError('Please verify your email first. Redirecting...')
+        setTimeout(() => {
+          navigate('/verify-email')
+        }, 1500)
+        return
+      }
+      
       localStorage.setItem('token', res.data.token)
       localStorage.setItem('user', JSON.stringify(res.data.user))
-      navigate('/dashboard')
+      // Use redirect_url from server response or fallback
+      const redirectUrl = res.data.redirect_url || '/dashboard'
+      navigate(redirectUrl)
     } catch (err) {
       setLoginError(err.response?.data?.message || 'Login failed. Please try again.')
     }
@@ -64,12 +77,20 @@ function Auth() {
       const res = await api.post('/register', regData)
       console.log('Registration response:', res.data)
       
-      localStorage.setItem('token', res.data.token)
-      localStorage.setItem('user', JSON.stringify(res.data.user))
-      const role = res.data.user.role
-      if (role === 'admin') navigate('/admin-dashboard')
-      else if (role === 'donor') navigate('/donor-dashboard')
-      else if (role === 'hospital') navigate('/hospital-dashboard')
+      if (res.data.requires_verification) {
+        // Store email for verification page
+        localStorage.setItem('pending_verification_email', regData.email)
+        // Navigate to verification page
+        navigate('/verify-email')
+      } else {
+        // Direct registration (fallback)
+        localStorage.setItem('token', res.data.token)
+        localStorage.setItem('user', JSON.stringify(res.data.user))
+        const role = res.data.user.role
+        if (role === 'admin') navigate('/admin-dashboard')
+        else if (role === 'donor') navigate('/dashboard')
+        else if (role === 'hospital') navigate('/hospital/dashboard')
+      }
     } catch (err) {
       console.error('Registration error:', err)
       console.error('Response:', err.response)

@@ -6,9 +6,17 @@ use App\Models\User;
 use App\Models\DonorProfile;
 use App\Models\HospitalProfile;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Services\EmailVerificationService;
 
 class AuthService
 {
+    private EmailVerificationService $emailVerificationService;
+
+    public function __construct(EmailVerificationService $emailVerificationService)
+    {
+        $this->emailVerificationService = $emailVerificationService;
+    }
+
     public function register(array $data)
     {
         \Log::info('AuthService register called with data:', $data);
@@ -20,6 +28,7 @@ class AuthService
             'role'     => $data['role'],
             'phone'    => $data['phone'] ?? null,
             'address'  => $data['address'] ?? null,
+            'is_verified' => false, // User starts as unverified
         ]);
 
         if ($user->role === 'donor') {
@@ -52,12 +61,22 @@ class AuthService
             ]);
         }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        // Send OTP for email verification
+        $otpSent = $this->emailVerificationService->sendOTP($user->email);
+        
+        if (!$otpSent) {
+            // If OTP fails, delete user and return error
+            $user->delete();
+            return response()->json([
+                'error' => 'Failed to send verification email',
+                'message' => 'Please check your email address and try again'
+            ], 422);
+        }
 
         return response()->json([
-            'message' => 'Registered successfully',
-            'token'   => $token,
+            'message' => 'Registration successful! Please check your email for verification code.',
             'user'    => $user,
+            'requires_verification' => true
         ], 201);
     }
 
@@ -71,12 +90,22 @@ class AuthService
             ], 401);
         }
 
+        // Check if user is verified
+        if (!$user->is_verified) {
+            return response()->json([
+                'message' => 'Please verify your email first',
+                'requires_verification' => true,
+                'email' => $user->email
+            ], 401);
+        }
+
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'message' => 'Login successful',
             'token'   => $token,
             'user'    => $user,
+            'redirect_url' => $user->role === 'hospital' ? '/hospital/dashboard' : '/dashboard'
         ]);
     }
 
@@ -93,6 +122,75 @@ class AuthService
     {
         return response()->json([
             'data' => $user,
+        ]);
+    }
+
+    /**
+     * Verify OTP and activate user account
+     */
+    public function verifyEmail(array $data)
+    {
+        $result = $this->emailVerificationService->verifyOTP($data['email'], $data['otp']);
+        
+        if (!$result['success']) {
+            return response()->json([
+                'error' => 'Verification failed',
+                'message' => $result['message']
+            ], 422);
+        }
+        
+        // Find and update user
+        $user = User::where('email', $data['email'])->first();
+        if (!$user) {
+            return response()->json([
+                'error' => 'User not found'
+            ], 404);
+        }
+        
+        $user->update([
+            'is_verified' => true,
+            'email_verified_at' => now(),
+        ]);
+        
+        // Generate token for automatic login
+        $token = $user->createToken('auth_token')->plainTextToken;
+        
+        return response()->json([
+            'message' => 'Email verified successfully!',
+            'token' => $token,
+            'user' => $user,
+            'redirect_url' => $user->role === 'hospital' ? '/hospital/dashboard' : '/dashboard'
+        ]);
+    }
+    
+    /**
+     * Resend OTP
+     */
+    public function resendOTP(array $data)
+    {
+        $user = User::where('email', $data['email'])->first();
+        if (!$user) {
+            return response()->json([
+                'error' => 'User not found'
+            ], 404);
+        }
+        
+        if ($user->is_verified) {
+            return response()->json([
+                'error' => 'Email already verified'
+            ], 422);
+        }
+        
+        $otpSent = $this->emailVerificationService->resendOTP($user->email);
+        
+        if (!$otpSent) {
+            return response()->json([
+                'error' => 'Failed to send verification email'
+            ], 422);
+        }
+        
+        return response()->json([
+            'message' => 'Verification code sent successfully!'
         ]);
     }
 }
