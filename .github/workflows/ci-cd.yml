@@ -37,6 +37,20 @@ jobs:
     - name: Copy environment file
       run: cp .env.example .env
 
+    - name: Set database environment
+      run: |
+        echo "DB_CONNECTION=mysql" >> .env
+        echo "DB_HOST=127.0.0.1" >> .env
+        echo "DB_PORT=3306" >> .env
+        echo "DB_DATABASE=bloodlink_test" >> .env
+        echo "DB_USERNAME=root" >> .env
+        echo "DB_PASSWORD=password" >> .env
+        echo "APP_ENV=testing" >> .env
+
+    - name: Wait for MySQL
+      run: |
+        timeout 60 bash -c 'while ! mysql -h 127.0.0.1 -P 3306 -u root -ppassword -e "SELECT 1"; do sleep 1; done'
+
     - name: Install dependencies
       run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
 
