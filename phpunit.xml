@@ -23,11 +23,10 @@
             <directory suffix=".php">./app</directory>
         </include>
         <exclude>
-            <directory suffix=".php">./app/Console/Kernel.php</directory>
-            <directory suffix=".php">./app/Exceptions</directory>
-            <directory suffix=".php">./app/Providers</directory>
+            <directory>./app/Console/Kernel.php</directory>
+            <directory>./app/Exceptions</directory>
+            <directory>./app/Providers</directory>
         </exclude>
-        </include>
         <report>
             <clover outputFile="coverage.xml"/>
         </report>
