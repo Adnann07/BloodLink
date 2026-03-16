@@ -24,7 +24,7 @@ class AuthControllerTest extends TestCase
 
         $response = $this->postJson('/api/register', $userData);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
         $response->assertJsonStructure([
             'message',
             'requires_verification',
@@ -74,7 +74,7 @@ class AuthControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'success',
+            'message',
             'token',
             'user',
             'redirect_url'
