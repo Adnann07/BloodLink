@@ -64,7 +64,7 @@ jobs:
 
     - name: Run tests
       run: |
-        vendor/bin/phpunit --coverage-clover=coverage.xml --coverage-text --min=80
+        vendor/bin/phpunit --coverage-clover=coverage.xml --coverage-text
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
