@@ -48,9 +48,11 @@ class AuthServiceTest extends TestCase
         ]);
 
         $responseData = $response->getData(true);
+        $this->assertArrayHasKey('message', $responseData);
+        $this->assertEquals('Registration successful! Please check your email for verification code.', $responseData['message']);
         $this->assertTrue($responseData['requires_verification']);
-        $this->assertArrayHasKey('email', $responseData);
-        $this->assertEquals('test@example.com', $responseData['email']);
+        $this->assertArrayHasKey('user', $responseData);
+        $this->assertEquals('test@example.com', $responseData['user']['email']);
     }
 
     public function test_user_login_with_valid_credentials()
@@ -69,8 +71,10 @@ class AuthServiceTest extends TestCase
 
         $responseData = $response->getData(true);
         $this->assertArrayHasKey('message', $responseData);
+        $this->assertEquals('Login successful', $responseData['message']);
         $this->assertArrayHasKey('token', $responseData);
         $this->assertArrayHasKey('user', $responseData);
+        $this->assertArrayHasKey('redirect_url', $responseData);
     }
 
     public function test_user_login_with_unverified_email()
@@ -89,7 +93,8 @@ class AuthServiceTest extends TestCase
 
         $responseData = $response->getData(true);
         $this->assertArrayHasKey('message', $responseData);
-        $this->assertEquals('Please verify your email before logging in', $responseData['message']);
+        $this->assertEquals('Please verify your email first', $responseData['message']);
         $this->assertTrue($responseData['requires_verification']);
+        $this->assertArrayHasKey('email', $responseData);
     }
 }

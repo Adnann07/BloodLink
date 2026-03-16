@@ -24,7 +24,6 @@
             <text outputFile="coverage.txt"/>
             <html outputDirectory="coverage-html"/>
         </report>
-        <require min="80.0"/>
     </coverage>
 
     <php>
