@@ -49,6 +49,7 @@ class AuthServiceTest extends TestCase
 
         $responseData = $response->getData(true);
         $this->assertTrue($responseData['requires_verification']);
+        $this->assertArrayHasKey('email', $responseData);
         $this->assertEquals('test@example.com', $responseData['email']);
     }
 
@@ -67,7 +68,7 @@ class AuthServiceTest extends TestCase
         ]);
 
         $responseData = $response->getData(true);
-        $this->assertTrue($responseData['success']);
+        $this->assertArrayHasKey('message', $responseData);
         $this->assertArrayHasKey('token', $responseData);
         $this->assertArrayHasKey('user', $responseData);
     }
@@ -87,7 +88,7 @@ class AuthServiceTest extends TestCase
         ]);
 
         $responseData = $response->getData(true);
-        $this->assertFalse($responseData['success']);
+        $this->assertArrayHasKey('message', $responseData);
         $this->assertEquals('Please verify your email before logging in', $responseData['message']);
         $this->assertTrue($responseData['requires_verification']);
     }

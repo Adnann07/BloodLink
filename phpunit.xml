@@ -19,14 +19,6 @@
     </testsuites>
 
     <coverage>
-        <include>
-            <directory suffix=".php">./app</directory>
-        </include>
-        <exclude>
-            <directory>./app/Console/Kernel.php</directory>
-            <directory>./app/Exceptions</directory>
-            <directory>./app/Providers</directory>
-        </exclude>
         <report>
             <clover outputFile="coverage.xml"/>
             <text outputFile="coverage.txt"/>

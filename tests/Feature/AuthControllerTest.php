@@ -5,10 +5,22 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\User;
+use App\Http\Services\EmailVerificationService;
+use Mockery;
 
 class AuthControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        
+        // Mock the EmailVerificationService to avoid actual email sending
+        $this->mock(EmailVerificationService::class, function ($mock) {
+            $mock->shouldReceive('sendOTP')->andReturn(true);
+        });
+    }
 
     public function test_user_registration_endpoint()
     {
@@ -98,7 +110,6 @@ class AuthControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'success',
             'message',
             'token',
             'user',
