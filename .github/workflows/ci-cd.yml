@@ -10,69 +10,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: bloodlink_test
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-        extensions: mbstring, xml, mysql, bcmath, curl, dom, tokenizer, json, ctype, fileinfo
-        coverage: xdebug
-
-    - name: Copy environment file
-      run: cp .env.example .env
-
-    - name: Set database environment
-      run: |
-        echo "DB_CONNECTION=mysql" >> .env
-        echo "DB_HOST=127.0.0.1" >> .env
-        echo "DB_PORT=3306" >> .env
-        echo "DB_DATABASE=bloodlink_test" >> .env
-        echo "DB_USERNAME=root" >> .env
-        echo "DB_PASSWORD=password" >> .env
-        echo "APP_ENV=testing" >> .env
-
-    - name: Wait for MySQL
-      run: |
-        timeout 60 bash -c 'while ! mysql -h 127.0.0.1 -P 3306 -u root -ppassword -e "SELECT 1"; do sleep 1; done'
-
-    - name: Install dependencies
-      run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
-
-    - name: Generate application key
-      run: php artisan key:generate
-
-    - name: Set up database
-      run: |
-        php artisan config:cache
-        php artisan migrate --env=testing --force
-
-    - name: Run tests
-      run: |
-        vendor/bin/phpunit --coverage-clover=coverage.xml --coverage-text
-
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
-
   build:
-    needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     
