@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\HospitalDashboardController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test', function() {
     return response()->json(['message' => 'API is working']);
 });
+
+// Contact route
+Route::post('/contact', [ContactController::class, 'send'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 // Auth routes
 Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);

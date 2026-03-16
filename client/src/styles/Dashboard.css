@@ -1,12 +1,12 @@
 .dashboard {
   min-height: 100vh;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 50%, #c0392b 100%);
+  background: var(--grey);
 }
 
 .dashboard-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 120px 2rem 2rem 2rem; /* Added 120px top padding for navbar */
 }
 
 .dashboard-header {
@@ -21,13 +21,13 @@
 }
 
 .dashboard-header h1 {
-  color: #c0392b;
+  color: var(--red);
   font-size: 2rem;
   font-weight: 700;
 }
 
 .btn-logout {
-  background: #e74c3c;
+  background: var(--red);
   color: white;
   border: none;
   padding: 0.8rem 1.5rem;
@@ -38,7 +38,7 @@
 }
 
 .btn-logout:hover {
-  background: #c0392b;
+  background: var(--red-dark);
 }
 
 .dashboard-grid {
@@ -61,20 +61,20 @@
 }
 
 .dashboard-card h2 {
-  color: #c0392b;
+  color: var(--red);
   font-size: 1.3rem;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid var(--red-bg);
 }
 
 .profile-info p {
   margin: 0.5rem 0;
-  color: #555;
+  color: var(--muted);
 }
 
 .profile-info strong {
-  color: #333;
+  color: var(--text);
   display: inline-block;
   width: 100px;
 }
@@ -91,15 +91,15 @@
   display: block;
   font-size: 3rem;
   font-weight: 700;
-  color: #c0392b;
-  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--red);
+  background: var(--red-bg);
+  padding: 1rem;
+  border-radius: 10px;
+  border: 2px solid var(--red);
 }
 
 .blood-type-display label {
-  color: #777;
+  color: var(--muted);
   font-size: 0.9rem;
 }
 
@@ -112,7 +112,7 @@
 
 .info-grid p {
   margin: 0.3rem 0;
-  color: #555;
+  color: var(--muted);
 }
 
 .stats-grid {
@@ -124,7 +124,7 @@
 
 .stat-item {
   padding: 1rem;
-  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  background: var(--red);
   border-radius: 10px;
   color: white;
 }
@@ -267,14 +267,14 @@
 .blood-group-item {
   text-align: center;
   padding: 1rem;
-  background: #f8f9fa;
+  background: var(--red-bg);
   border-radius: 10px;
-  border: 2px solid #e9ecef;
+  border: 2px solid var(--red-light);
   transition: all 0.3s;
 }
 
 .blood-group-item:hover {
-  border-color: #c0392b;
+  border-color: var(--red);
   transform: translateY(-2px);
 }
 
@@ -282,8 +282,13 @@
   display: block;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #c0392b;
+  color: var(--red);
   margin-bottom: 0.5rem;
+}
+
+.blood-group-item .units {
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .blood-stats {
@@ -294,7 +299,7 @@
 
 .blood-stats span {
   font-size: 0.8rem;
-  color: #666;
+  color: var(--muted);
 }
 
 .blood-stats .available {
@@ -307,13 +312,13 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #c0392b, #e74c3c);
+  background: var(--red);
   color: white;
   border: none;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #a93226, #c0392b);
+  background: var(--red-dark);
   transform: scale(1.02);
 }
 
@@ -338,14 +343,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background: #fff5f5;
-  border: 1px solid #fed7d7;
+  background: var(--red-bg);
+  border: 1px solid var(--red-light);
   border-radius: 8px;
   margin-bottom: 0.8rem;
 }
 
 .urgent-type {
-  background: #c0392b;
+  background: var(--red);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 20px;
@@ -354,12 +359,12 @@
 }
 
 .urgent-units {
-  color: #666;
+  color: var(--muted);
   font-weight: 600;
 }
 
 .urgent-patient {
-  color: #333;
+  color: var(--text);
   flex: 1;
   margin: 0 1rem;
 }
@@ -381,7 +386,7 @@
 }
 
 .blood-type-small {
-  background: #c0392b;
+  background: var(--red);
   color: white;
   padding: 0.2rem 0.5rem;
   border-radius: 10px;
@@ -390,6 +395,30 @@
 }
 
 @media (max-width: 768px) {
+  .dashboard-container {
+    padding: 100px 1rem 1rem 1rem; /* Reduced top padding for mobile navbar */
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
   .blood-availability-card,
   .urgent-card {
     grid-column: span 1;
@@ -407,5 +436,33 @@
   
   .urgent-patient {
     margin: 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard-container {
+    padding: 110px 1.5rem 1.5rem 1.5rem; /* Slightly reduced top padding for tablets */
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 90px 1rem 1rem 1rem; /* Further reduced top padding for small mobile */
+  }
+  
+  .dashboard-header h1 {
+    font-size: 1.3rem;
+  }
+  
+  .dashboard-card {
+    padding: 1rem;
   }
 }

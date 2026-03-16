@@ -11,7 +11,7 @@ function Navbar() {
           <li><a href="#">Donate</a></li>
           <li><Link to="/askai">Ask AI</Link></li>
           <li><a href="#">Volunteers</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><Link to="/contact">Contact</Link></li>
         </ul>
         <div className="nav-right">
           <Link to="/auth" className="nav-login">Log in or create account</Link>

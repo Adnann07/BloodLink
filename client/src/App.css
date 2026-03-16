@@ -72,3 +72,6 @@
   margin-top: 1rem;
   text-align: center;
 }
+
+/* Import Contact Page Styles */
+@import './styles/Contact.css';

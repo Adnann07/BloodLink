@@ -32,17 +32,6 @@ class AuthService
         ]);
 
         if ($user->role === 'donor') {
-            // Debug: return data to see what's received
-            if (empty($data['blood_group']) || empty($data['date_of_birth']) || empty($data['gender'])) {
-                return response()->json([
-                    'error' => 'Missing donor data',
-                    'received_data' => $data,
-                    'blood_group' => $data['blood_group'] ?? 'MISSING',
-                    'date_of_birth' => $data['date_of_birth'] ?? 'MISSING',
-                    'gender' => $data['gender'] ?? 'MISSING',
-                ], 422);
-            }
-            
             DonorProfile::create([
                 'user_id'       => $user->id,
                 'blood_group'   => $data['blood_group'],
@@ -62,7 +51,12 @@ class AuthService
         }
 
         // Send OTP for email verification
-        $otpSent = $this->emailVerificationService->sendOTP($user->email);
+        try {
+            $otpSent = $this->emailVerificationService->sendOTP($user->email);
+        } catch (\Exception $e) {
+            \Log::error('Email verification failed: ' . $e->getMessage());
+            $otpSent = false;
+        }
         
         if (!$otpSent) {
             // If OTP fails, delete user and return error
