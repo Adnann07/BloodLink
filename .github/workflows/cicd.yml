@@ -21,13 +21,13 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      - name: Install Node Dependencies (Client)
+      - name: Install Frontend Dependencies
         working-directory: ./client
         run: npm ci
 
-      - name: Run Linter (Frontend)
+      - name: Run ESLint
         working-directory: ./client
-        run: npm run lint
+        run: npm run lint -- --max-warnings=0
 
       - name: Build Frontend
         working-directory: ./client
