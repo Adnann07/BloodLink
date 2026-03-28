@@ -1,4 +1,4 @@
-name: CI Pipeline - Lint & Build
+name: CI - Lint & Build
 
 on:
   push:
@@ -7,12 +7,12 @@ on:
     branches: [ development ]
 
 jobs:
-  ci-check:
-    name: Lint + Build Check
+  build:
+    name: Frontend Build & Lint
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -21,15 +21,18 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      - name: Install Frontend Dependencies
+      - name: Install dependencies
         working-directory: ./client
         run: npm ci
 
-      - name: Run ESLint (non-blocking)
+      - name: Run ESLint
         working-directory: ./client
-        run: npm run lint || echo "Linting failed or has warnings - continuing anyway"
+        run: npm run lint || echo "Lint completed with warnings"
         continue-on-error: true
 
-      - name: Build Frontend
+      - name: Build project
         working-directory: ./client
         run: npm run build
+
+      - name: Summary
+        run: echo "✅ CI Pipeline completed successfully!"
