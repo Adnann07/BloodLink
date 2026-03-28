@@ -1,4 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
+// This tells ESLint: "I know this variable isn't used yet, don't yell at me."
+// eslint-disable-next-line no-unused-vars
+import { useNavigate, Link } from 'react-router-dom';
 
 function Navbar() {
   return (

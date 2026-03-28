@@ -82,7 +82,8 @@ function EmailVerification() {
     }
 
     try {
-      const res = await api.post('/resend-otp', { email })
+     
+await api.post('/verify-email', { email });
       setSuccess('New OTP sent to your email!')
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to resend OTP. Please try again.')

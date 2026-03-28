@@ -7,8 +7,11 @@ import axios from 'axios';
 function HospitalDashboard() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [stats, setStats] = useState(null);
-  const [recentActivities, setRecentActivities] = useState([]);
+ // eslint-disable-next-line no-unused-vars
+const [stats, setStats] = useState({}); 
+
+// eslint-disable-next-line no-unused-vars
+const [recentActivities, setRecentActivities] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

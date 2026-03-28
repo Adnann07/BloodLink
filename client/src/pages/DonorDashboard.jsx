@@ -7,7 +7,7 @@ import axios from 'axios';
 function DonorDashboard() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [donations, setDonations] = useState([]);
+ const [donations] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

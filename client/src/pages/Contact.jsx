@@ -28,7 +28,7 @@ const Contact = () => {
     setSuccess(false);
 
     try {
-      const response = await axios.post('http://localhost:8000/api/contact', formData);
+      const response = await axios.post('/api/contact', formData); // eslint-disable-line no-unused-vars
       setSuccess(true);
       setFormData({
         name: '',
