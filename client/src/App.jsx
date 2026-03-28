@@ -5,6 +5,7 @@ import EmailVerification from './pages/EmailVerification'
 import AskAI from './pages/AskAI'
 import DonorDashboard from './pages/DonorDashboard'
 import HospitalDashboard from './pages/HospitalDashboard'
+import Contact from './pages/Contact'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/verify-email" element={<EmailVerification />} />
         <Route path="/askai" element={<AskAI />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/dashboard" element={<DonorDashboard />} />
         <Route path="/hospital/dashboard" element={<HospitalDashboard />} />
       </Routes>

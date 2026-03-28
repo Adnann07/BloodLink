@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/Dashboard.css';
+import axios from 'axios';
 
 function DonorDashboard() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [donations, setDonations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -17,7 +19,29 @@ function DonorDashboard() {
       return;
     }
     
-    setUser(JSON.parse(storedUser));
+    const userData = JSON.parse(storedUser);
+    setUser(userData);
+
+    // Fetch fresh user data with profile
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        // Update localStorage and state with fresh data
+        localStorage.setItem('user', JSON.stringify(response.data));
+        setUser(response.data);
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
   }, [navigate]);
 
   const handleLogout = () => {
@@ -26,7 +50,7 @@ function DonorDashboard() {
     navigate('/auth');
   };
 
-  if (!user) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
