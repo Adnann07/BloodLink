@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/Dashboard.css';
+import axios from 'axios';
 
 function HospitalDashboard() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [hospitalProfile, setHospitalProfile] = useState(null);
   const [stats, setStats] = useState(null);
   const [recentActivities, setRecentActivities] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,39 +22,34 @@ function HospitalDashboard() {
     
     const userData = JSON.parse(storedUser);
     setUser(userData);
-    
+
     // Check if user is hospital
     if (userData.role !== 'hospital') {
       navigate('/dashboard'); // Redirect to donor dashboard
       return;
     }
     
-    fetchDashboardData(token);
-  }, [navigate]);
-
-  const fetchDashboardData = async (token) => {
-    try {
-      const response = await fetch('http://localhost:8000/api/hospital/dashboard', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setHospitalProfile(data.hospitalProfile);
-        setStats(data.stats);
-        setRecentActivities(data.recentActivities);
-      } else {
-        console.error('Failed to fetch dashboard data');
+    // Fetch fresh user data with profile
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        // Update localStorage and state with fresh data
+        localStorage.setItem('user', JSON.stringify(response.data));
+        setUser(response.data);
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    fetchUserData();
+  }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -84,12 +79,11 @@ function HospitalDashboard() {
           <div className="dashboard-card profile-card">
             <h2>Hospital Profile</h2>
             <div className="profile-info">
-              <p><strong>Hospital Name:</strong> {hospitalProfile?.hospital_name || 'N/A'}</p>
+              <p><strong>Hospital Name:</strong> {user.hospital_profile?.hospital_name || 'N/A'}</p>
               <p><strong>Email:</strong> {user.email}</p>
-              <p><strong>License Number:</strong> {hospitalProfile?.license_number || 'Not provided'}</p>
-              <p><strong>Emergency Contact:</strong> {hospitalProfile?.emergency_contact || 'Not provided'}</p>
+              <p><strong>License Number:</strong> {user.hospital_profile?.license_number || 'Not provided'}</p>
               <p><strong>Phone:</strong> {user.phone || 'Not provided'}</p>
-              <p><strong>Address:</strong> {user.address || 'Not provided'}</p>
+              <p><strong>City:</strong> {user.hospital_profile?.city || 'Not provided'}</p>
             </div>
           </div>
 

@@ -26,11 +26,16 @@ body {
   overflow-x: hidden;
 }
 
+/* Ensure main content doesn't overlap with fixed navbar */
+main, .dashboard, .contact-page, .auth-page {
+  padding-top: 60px;
+}
+
 /* Navbar */
 nav {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 100;
+  z-index: 1000; /* Increased z-index */
   background: var(--black);
   display: flex;
   align-items: center;
