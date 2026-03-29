@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use DateTimeInterface;
 
 class User extends Authenticatable
 {
@@ -40,6 +41,40 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'is_verified' => 'boolean',
     ];
+
+    /**
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param  \DateTimeInterface  $date
+     * @return string
+     */
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d');
+    }
+
+    /**
+     * Get the attributes that should be converted to camel case.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $data = parent::toArray();
+        
+        // Convert relationship keys to camelCase
+        if (isset($data['donor_profile'])) {
+            $data['donorProfile'] = $data['donor_profile'];
+            unset($data['donor_profile']);
+        }
+        
+        if (isset($data['hospital_profile'])) {
+            $data['hospitalProfile'] = $data['hospital_profile'];
+            unset($data['hospital_profile']);
+        }
+        
+        return $data;
+    }
 
     public function donorProfile()
     {

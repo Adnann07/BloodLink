@@ -120,9 +120,14 @@ class AuthService
 
     public function me($user)
     {
-        return response()->json([
-            'data' => $user,
-        ]);
+        // Load user with relationships based on role
+        if ($user->role === 'donor') {
+            $user->load('donorProfile');
+        } elseif ($user->role === 'hospital') {
+            $user->load('hospitalProfile');
+        }
+        
+        return response()->json($user);
     }
 
     /**
