@@ -143,25 +143,21 @@ class HospitalDashboardController extends Controller
             'units_needed' => 'required|integer|min:1|max:50',
             'urgency_level' => 'required|in:normal,urgent,critical',
             'patient_name' => 'required|string|max:255',
-            'hospital_name' => 'required|string|max:255',
-            'contact_person' => 'required|string|max:255',
-            'contact_phone' => 'required|string|max:20',
             'reason' => 'required|string|max:1000',
             'required_date' => 'required|date|after:today',
         ]);
 
-        \App\Models\Post::create([
-            'user_id' => Auth::id(),
-            'title' => "Blood Request: {$request->blood_group} - {$request->units_needed} units",
-            'content' => $request->reason,
-            'type' => 'request',
-            'blood_group' => $request->blood_group,
-            'units_needed' => $request->units_needed,
-            'urgency_level' => $request->urgency_level,
-            'patient_name' => $request->patient_name,
-            'hospital_name' => $request->hospital_name,
-            'contact_person' => $request->contact_person,
-            'contact_phone' => $request->contact_phone,
+        // Map UI urgency to DB urgency
+        $urgencyMap = ['normal' => 'medium', 'urgent' => 'high', 'critical' => 'critical'];
+        $dbUrgency = $urgencyMap[$request->urgency_level] ?? 'medium';
+
+        $bloodRequest = \App\Models\BloodRequest::create([
+            'hospital_id' => Auth::id(),
+            'request_id' => 'REQ-' . strtoupper(bin2hex(random_bytes(3))),
+            'blood_type' => $request->blood_group,
+            'volume_ml' => $request->units_needed * 450, // 1 unit approx 450ml
+            'urgency' => $dbUrgency,
+            'patient_details' => $request->patient_name . ': ' . $request->reason,
             'required_date' => $request->required_date,
             'status' => 'pending',
         ]);

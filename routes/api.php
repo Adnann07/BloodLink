@@ -22,6 +22,9 @@ Route::get('/test', function() {
     return response()->json(['message' => 'API is working']);
 });
 
+// AI Chat route
+Route::post('/chat', [\App\Http\Controllers\AIController::class, 'chat']);
+
 // Auth routes
 Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
