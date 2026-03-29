@@ -182,10 +182,14 @@ function Auth() {
               <div className="form-group">
                 <label>Phone (optional)</label>
                 <input
-                  type="text"
+                  type="tel"
                   placeholder="Enter your phone number"
                   value={regData.phone}
-                  onChange={e => setRegData({ ...regData, phone: e.target.value })}
+                  onChange={e => {
+                    // Only allow digits, +, -, (, ), and spaces
+                    const value = e.target.value.replace(/[^0-9+\-\(\)\s]/g, '');
+                    setRegData({ ...regData, phone: value });
+                  }}
                 />
               </div>
 

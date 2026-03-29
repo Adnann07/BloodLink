@@ -81,13 +81,13 @@ function DonorDashboard() {
             <h2>Blood Donation Info</h2>
             <div className="blood-info">
               <div className="blood-type-display">
-                <span className="blood-type">{user.donor_profile?.blood_group || 'N/A'}</span>
+                <span className="blood-type">{user.donorProfile?.blood_group || 'N/A'}</span>
                 <label>Blood Group</label>
               </div>
               <div className="info-grid">
-                <p><strong>Gender:</strong> {user.donor_profile?.gender || 'N/A'}</p>
-                <p><strong>Date of Birth:</strong> {user.donor_profile?.date_of_birth || 'N/A'}</p>
-                <p><strong>Weight:</strong> {user.donor_profile?.weight_kg ? `${user.donor_profile.weight_kg} kg` : 'N/A'}</p>
+                <p><strong>Gender:</strong> {user.donorProfile?.gender || 'N/A'}</p>
+                <p><strong>Date of Birth:</strong> {user.donorProfile?.date_of_birth || 'N/A'}</p>
+                <p><strong>Weight:</strong> {user.donorProfile?.weight_kg ? `${user.donorProfile.weight_kg} kg` : 'N/A'}</p>
               </div>
             </div>
           </div>
