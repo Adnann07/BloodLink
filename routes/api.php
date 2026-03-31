@@ -23,7 +23,7 @@ Route::get('/test', function() {
 });
 
 // AI Chat route
-Route::post('/chat', [\App\Http\Controllers\AIController::class, 'chat']);
+Route::post('/chat', [\App\Http\Controllers\AIController::class, 'chat'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 // Auth routes
 Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);

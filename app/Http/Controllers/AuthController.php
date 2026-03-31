@@ -26,7 +26,7 @@ class AuthController extends Controller
                 'email'          => 'required|email|max:255|unique:users',
                 'password'       => 'required|string|min:6',
                 'role'           => 'required|string|in:donor,hospital',
-                'phone'          => 'nullable|regex:/^[\d\s\-\+\(\)]+$/|max:20',
+                'phone'          => 'nullable|string|max:20',
                 'address'        => 'nullable|string|max:500',
             ];
             

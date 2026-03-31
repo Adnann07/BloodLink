@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Navbar from '../components/Navbar'
 
-const API_URL = 'http://localhost:8000/api'
+const API_URL = 'http://127.0.0.1:8000/api'
 
 const api = axios.create({
   baseURL: API_URL,
@@ -55,7 +55,10 @@ function Auth() {
       const redirectUrl = res.data.redirect_url || '/dashboard'
       navigate(redirectUrl)
     } catch (err) {
-      setLoginError(err.response?.data?.message || 'Login failed. Please try again.')
+      console.error('Login error:', err)
+      console.error('Response:', err.response)
+      console.error('Request:', err.request)
+      setLoginError(err.response?.data?.message || err.message || 'Login failed. Please try again.')
     }
   }
 
