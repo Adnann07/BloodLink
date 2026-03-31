@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,3 +27,8 @@ Route::post('/items', [UsersController::class, 'store']);
 Route::put('/items/{id}', [UsersController::class, 'update']);
 Route::patch('/items/{id}', [UsersController::class, 'patch']);
 Route::delete('/items/{id}', [UsersController::class, 'destroy']);
+
+// Registration routes
+Route::post('/donors', [RegistrationController::class, 'storeDonor']);
+Route::post('/volunteers', [RegistrationController::class, 'storeVolunteer']);
+Route::post('/messages', [RegistrationController::class, 'storeMessage']);
