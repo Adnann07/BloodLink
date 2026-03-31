@@ -4,35 +4,46 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class AIController extends Controller
 {
     public function chat(Request $request)
     {
         $request->validate(['message' => 'required|string']);
+
         $apiKey = env('GEMINI_API_KEY');
-        $userMessage = $request->input('message');
+        $model = 'gemini-2.5-flash';
 
-        try {
-            // Using v1beta/gemini-1.5-flash which is standard for AI Studio keys in early 2026
-            $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}";
-            
-            $response = Http::timeout(15)->post($url, [
+        $systemPrompt = 'You are a Blood Donation Assistant. Your role is to provide accurate, helpful information about blood donation. You can answer questions about: eligibility criteria, blood types, donation process, preparation before donation, aftercare, health benefits, myths vs facts, finding blood drives, and donor safety. Always be encouraging, informative, and safety-conscious. If someone asks about medical emergencies or personal medical advice, remind them to consult healthcare professionals. Keep responses concise and friendly.';
+
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ])->post(
+            "https://generativelanguage.googleapis.com/v1/models/{$model}:generateContent?key={$apiKey}",
+            [
                 'contents' => [
-                    ['parts' => [['text' => "You are a blood donation assistant. Answer user: {$userMessage} Lawyers: 1. Bangla/English. 2. Concise."]]]
+                    [
+                        'role' => 'user',
+                        'parts' => [
+                            ['text' => $systemPrompt . "\n\nUser question: " . $request->message]
+                        ]
+                    ]
                 ]
-            ]);
+            ]
+        );
 
-            if ($response->successful()) {
-                $data = $response->json();
-                return response()->json(['text' => $data['candidates'][0]['content']['parts'][0]['text'] ?? "Error: Empty AI response."]);
-            }
-
-            return response()->json(['error' => 'Model failure', 'details' => $response->body()], 500);
-
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Server connection error', 'details' => $e->getMessage()], 500);
+        if ($response->failed()) {
+            return response()->json([
+                'error' => 'Gemini API error',
+                'details' => $response->json()
+            ], 500);
         }
+
+        $data = $response->json();
+        $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? 'No response';
+
+        return response()->json([
+            'reply' => $text,
+        ]);
     }
 }
