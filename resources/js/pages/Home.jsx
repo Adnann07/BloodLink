@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
+import Navbar from "../components/Navbar";
 
 const NAV_LINKS = ["Home", "Donor", "Donate", "Ask AI", "Volunteers", "Contact"];
 
@@ -8,51 +10,7 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "'Georgia', serif", color: "#1a1a1a", margin: 0, padding: 0 }}>
       {/* Navbar */}
-      <nav style={{
-        backgroundColor: "#f28b8b",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "0 40px",
-        height: "60px",
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-      }}>
-        <div style={{ display: "flex", gap: "32px" }}>
-          {["Home", "Donor", "Donate", "Ask AI"].map(link => (
-            <a key={link} href="#" style={{
-              color: "#fff",
-              textDecoration: "none",
-              fontSize: "15px",
-              fontFamily: "sans-serif",
-              fontWeight: 500,
-            }}>{link}</a>
-          ))}
-        </div>
-        <div style={{ display: "flex", gap: "32px", alignItems: "center" }}>
-          {["Volunteers", "Contact"].map(link => (
-            <a key={link} href="#" style={{
-              color: "#fff",
-              textDecoration: "none",
-              fontSize: "15px",
-              fontFamily: "sans-serif",
-              fontWeight: 500,
-            }}>{link}</a>
-          ))}
-          <button style={{
-            backgroundColor: "#c0392b",
-            color: "#fff",
-            border: "none",
-            padding: "10px 22px",
-            borderRadius: "6px",
-            fontWeight: 700,
-            fontSize: "15px",
-            cursor: "pointer",
-            fontFamily: "sans-serif",
-          }}>Donate Now</button>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero Section */}
       <section style={{
@@ -81,17 +39,18 @@ export default function Home() {
             Your one drop of blood can change someone's entire world. Join thousands of heroes making a difference every day.
           </p>
           <div style={{ display: "flex", gap: "16px" }}>
-            <button style={{
+            <Link to="/donate" style={{
               backgroundColor: "#c0392b",
               color: "#fff",
-              border: "none",
+              textDecoration: "none",
               padding: "14px 28px",
               borderRadius: "6px",
               fontWeight: 700,
               fontSize: "15px",
               cursor: "pointer",
               fontFamily: "sans-serif",
-            }}>Donate Now</button>
+              display: "inline-block",
+            }}>Donate Now</Link>
             <button style={{
               backgroundColor: "#fff",
               color: "#c0392b",

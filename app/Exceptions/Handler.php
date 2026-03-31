@@ -37,6 +37,14 @@ class Handler extends ExceptionHandler
         }
 
         // Default response for unexpected exceptions
+        if (config('app.debug')) {
+            return response()->json([
+                'error' => true,
+                'message' => $exception->getMessage(),
+                'trace' => $exception->getTrace()
+            ], 500);
+        }
+
         return response()->json([
             'error' => true,
             'message' => 'An unexpected error occurred',

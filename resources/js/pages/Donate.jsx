@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
+import Navbar from "../components/Navbar";
 
 export default function Donate() {
   const [form, setForm] = useState({
@@ -22,33 +24,7 @@ export default function Donate() {
     <div style={{ fontFamily: "sans-serif", color: "#1a1a1a", margin: 0, padding: 0 }}>
 
       {/* Navbar */}
-      <nav style={{
-        backgroundColor: "#f28b8b",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "0 40px",
-        height: "60px",
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-      }}>
-        <div style={{ display: "flex", gap: "32px" }}>
-          {["Home", "Donor", "Donate", "Ask AI"].map(link => (
-            <a key={link} href="#" style={{ color: "#fff", textDecoration: "none", fontSize: "15px", fontWeight: 500 }}>{link}</a>
-          ))}
-        </div>
-        <div style={{ display: "flex", gap: "32px", alignItems: "center" }}>
-          {["Volunteers", "Contact"].map(link => (
-            <a key={link} href="#" style={{ color: "#fff", textDecoration: "none", fontSize: "15px", fontWeight: 500 }}>{link}</a>
-          ))}
-          <button style={{
-            backgroundColor: "#c0392b", color: "#fff", border: "none",
-            padding: "10px 22px", borderRadius: "6px", fontWeight: 700,
-            fontSize: "15px", cursor: "pointer",
-          }}>Donate Now</button>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero Banner */}
       <section style={{

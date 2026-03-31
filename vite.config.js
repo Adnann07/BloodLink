@@ -11,12 +11,3 @@ export default defineConfig({
         react(),
     ],
 });
-```
-**Ctrl + S** to save.
-
----
-
-## Step 2 — Rename app.js to app.jsx
-In the VS Code terminal:
-```
-ren resources\js\app.js app.jsx
