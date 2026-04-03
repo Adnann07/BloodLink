@@ -5,6 +5,7 @@ import EmailVerification from './pages/EmailVerification'
 import AskAI from './pages/AskAI'
 import DonorDashboard from './pages/DonorDashboard'
 import DonorList from './pages/DonorList'
+import AdminDashboard from './pages/AdminDashboard'
 import HospitalDashboard from './pages/HospitalDashboard'
 import Contact from './pages/Contact'
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/dashboard" element={<DonorDashboard />} />
         <Route path="/hospital/dashboard" element={<HospitalDashboard />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
     </BrowserRouter>
   )

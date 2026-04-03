@@ -16,6 +16,28 @@ class UsersController extends Controller
     }
 
     /**
+     * Get admin statistics
+     */
+    public function getAdminStats()
+    {
+        try {
+            $stats = [
+                'totalUsers' => \App\Models\User::count(),
+                'totalDonors' => \App\Models\User::where('role', 'donor')->count(),
+                'totalHospitals' => \App\Models\User::where('role', 'hospital')->count(),
+                'totalDonations' => \App\Models\BloodDonation::count(),
+            ];
+
+            return response()->json($stats);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to fetch admin stats',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Get all donors with their profiles
      */
     public function getDonors()

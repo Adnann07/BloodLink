@@ -105,7 +105,7 @@ class AuthService
             'message' => 'Login successful',
             'token'   => $token,
             'user'    => $user,
-            'redirect_url' => $user->role === 'hospital' ? '/hospital/dashboard' : '/dashboard'
+            'redirect_url' => $user->role === 'hospital' ? '/hospital/dashboard' : ($user->role === 'admin' ? '/admin-dashboard' : '/dashboard')
         ]);
     }
 
@@ -164,7 +164,7 @@ class AuthService
             'message' => 'Email verified successfully!',
             'token' => $token,
             'user' => $user,
-            'redirect_url' => $user->role === 'hospital' ? '/hospital/dashboard' : '/dashboard'
+            'redirect_url' => $user->role === 'hospital' ? '/hospital/dashboard' : ($user->role === 'admin' ? '/admin-dashboard' : '/dashboard')
         ]);
     }
     

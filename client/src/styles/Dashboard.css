@@ -27,6 +27,16 @@
   font-weight: 700;
 }
 
+.admin-badge {
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-left: 1rem;
+}
+
 .btn-logout {
   background: #e74c3c;
   color: white;

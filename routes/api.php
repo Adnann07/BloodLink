@@ -28,6 +28,9 @@ Route::post('/chat', [\App\Http\Controllers\AIController::class, 'chat'])->witho
 // Donors list route (public access)
 Route::get('/donors', [\App\Http\Controllers\UsersController::class, 'getDonors']);
 
+// Admin stats route
+Route::get('/admin/stats', [\App\Http\Controllers\UsersController::class, 'getAdminStats'])->middleware('auth:sanctum');
+
 // Auth routes
 Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);

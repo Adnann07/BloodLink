@@ -90,8 +90,7 @@ function Auth() {
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('user', JSON.stringify(res.data.user))
         const role = res.data.user.role
-        if (role === 'admin') navigate('/admin-dashboard')
-        else if (role === 'donor') navigate('/dashboard')
+        if (role === 'donor') navigate('/dashboard')
         else if (role === 'hospital') navigate('/hospital/dashboard')
       }
     } catch (err) {
@@ -202,7 +201,6 @@ function Auth() {
                   <option value="">Select your role</option>
                   <option value="donor">Donor</option>
                   <option value="hospital">Hospital</option>
-                  <option value="admin">Admin</option>
                 </select>
               </div>
 
