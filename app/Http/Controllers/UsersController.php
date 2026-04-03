@@ -16,6 +16,40 @@ class UsersController extends Controller
     }
 
     /**
+     * Get all donors with their profiles
+     */
+    public function getDonors()
+    {
+        try {
+            $donors = \App\Models\User::where('role', 'donor')
+                ->with('donorProfile')
+                ->get()
+                ->map(function ($user) {
+                    return [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'phone' => $user->phone ?: 'Not provided',
+                        'blood_group' => $user->donorProfile?->blood_group ?? 'N/A',
+                        'location' => $user->address ?? 'Location not specified',
+                        'total_donations' => $user->donations()->count() ?? 0,
+                        'last_donation' => $user->donations()->latest()->first()?->donation_date ?? null,
+                        'date_of_birth' => $user->donorProfile?->date_of_birth,
+                        'gender' => $user->donorProfile?->gender,
+                        'weight_kg' => $user->donorProfile?->weight_kg,
+                    ];
+                });
+
+            return response()->json($donors);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to fetch donors',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()

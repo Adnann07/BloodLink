@@ -25,6 +25,9 @@ Route::get('/test', function() {
 // AI Chat route
 Route::post('/chat', [\App\Http\Controllers\AIController::class, 'chat'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
+// Donors list route (public access)
+Route::get('/donors', [\App\Http\Controllers\UsersController::class, 'getDonors']);
+
 // Auth routes
 Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);

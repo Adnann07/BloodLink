@@ -33,7 +33,7 @@ function Navbar() {
         <span className="nav-brand">BloodLink</span>
         <ul className="nav-links">
           <li><Link to="/">Home</Link></li>
-          <li><a href="#">Donor</a></li>
+          <li><Link to="/donors">Find Donors</Link></li>
           <li><a href="#">Donate</a></li>
           <li><Link to="/askai">Ask AI</Link></li>
           <li><a href="#">Volunteers</a></li>
