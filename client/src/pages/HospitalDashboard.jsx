@@ -82,11 +82,11 @@ const [recentActivities, setRecentActivities] = useState([]);
           <div className="dashboard-card profile-card">
             <h2>Hospital Profile</h2>
             <div className="profile-info">
-              <p><strong>Hospital Name:</strong> {user.hospital_profile?.hospital_name || 'N/A'}</p>
+              <p><strong>Hospital Name:</strong> {user.hospitalProfile?.hospital_name || 'N/A'}</p>
               <p><strong>Email:</strong> {user.email}</p>
-              <p><strong>License Number:</strong> {user.hospital_profile?.license_number || 'Not provided'}</p>
+              <p><strong>License Number:</strong> {user.hospitalProfile?.license_number || 'Not provided'}</p>
               <p><strong>Phone:</strong> {user.phone || 'Not provided'}</p>
-              <p><strong>City:</strong> {user.hospital_profile?.city || 'Not provided'}</p>
+              <p><strong>City:</strong> {user.hospitalProfile?.city || 'Not provided'}</p>
             </div>
           </div>
 

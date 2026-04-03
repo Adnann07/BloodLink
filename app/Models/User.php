@@ -87,7 +87,7 @@ class User extends Authenticatable
 
     public function donations()
     {
-        return $this->hasMany(Donation::class, 'donor_id');
+        return $this->hasMany(BloodDonation::class, 'donor_id');
     }
 
     public function bloodRequests()
