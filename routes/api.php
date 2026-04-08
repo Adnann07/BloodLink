@@ -25,12 +25,15 @@ Route::get('/test', function() {
 // AI Chat route
 Route::post('/chat', [\App\Http\Controllers\AIController::class, 'chat'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
+<<<<<<< HEAD
 
 // Volunteer routes (public)
 Route::get('/volunteers', [\App\Http\Controllers\VolunteerController::class, 'index']);
 Route::post('/volunteers', [\App\Http\Controllers\VolunteerController::class, 'store'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 
+=======
+>>>>>>> 65bbe2c4c508959fc0675cf63aa9ed025e22033e
 // Donors list route (public access)
 Route::get('/donors', [\App\Http\Controllers\UsersController::class, 'getDonors']);
 
