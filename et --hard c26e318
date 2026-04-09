@@ -1,0 +1,70 @@
+[33mc26e318[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdevelopment[m[33m, [m[1;31morigin/admin[m[33m)[m admin dashboard added
+[33m817c8da[m Merge pull request #27 from Adnann07/donorPage
+[33m76d45e6[m[33m ([m[1;31morigin/donorPage[m[33m)[m donor page added
+[33m2786763[m Merge pull request #26 from Adnann07/AIChatbot
+[33m6ebdd7d[m[33m ([m[1;31morigin/AIChatbot[m[33m)[m Gemini AI chatbot integrated
+[33m39a2d49[m Merge pull request #24 from Adnann07/AI
+[33m974a92e[m added gemini ai
+[33m599da24[m Merge pull request #23 from Adnann07/dynamic-navbar
+[33mb440d4d[m[33m ([m[1;31morigin/dynamic-navbar[m[33m)[m when logged in, navbar changes
+[33m148215c[m Merge remote changes and add CI/CD workflow
+[33mdb56dc0[m fix: resolve all eslint unused-vars and undefined-vars errors
+[33m35bc790[m Refactor CI pipeline job names and steps
+[33m5f30a36[m Update ESLint step to be non-blocking
+[33me8d3660[m Fix CI workflow - use proper lint command with max-warnings
+[33m21e2de1[m Add GitHub Actions CI workflow for lint and build
+[33m22ed988[m Merge pull request #21 from Adnann07/fix
+[33m11070ee[m fixed
+[33m4a866db[m Merge pull request #20 from Adnann07/br
+[33mab99b2f[m stable
+[33me3c52f2[m Merge pull request #18 from Adnann07/actions
+[33mfd05992[m CI added Fixed
+[33me551100[m CI added Fixed
+[33m779324c[m CI added Fixed
+[33m2c99226[m CI added
+[33mfc0301c[m Merge pull request #17 from Adnann07/hosp_dash
+[33md65e7a2[m added hospital dashboard, email otp
+[33mb8e81dd[m Merge pull request #16 from Adnann07/new-branch
+[33m0b994ed[m fixed login/reg, added donor dashboard
+[33ma780c9c[m Merge pull request #15 from Adnann07/connection
+[33mb1e2bc0[m connecting backend with frontend
+[33mf09ed41[m add vite entry index.html
+[33m9c67145[m remove some file
+[33m7b428b8[m update client gitignore
+[33mc23e349[m add react config files
+[33m65ff415[m add public assets
+[33m64e502a[m add react source files
+[33m67e4ce5[m Merge pull request #11 from Adnann07/nginx-fix
+[33m6dd8d2c[m nginx fixed
+[33mb9c2829[m Merge pull request #7 from Adnann07/models
+[33m28ad54b[m models added
+[33mbc36caf[m Merge pull request #5 from Adnann07/docker
+[33m9faa069[m docker added
+[33m1789021[m fix glitch in README.md
+[33maa66e08[m Create Task_Issues_Erin
+[33mcd0d7bd[m add auth javascript
+[33m65501bf[m add auth styles
+[33m8d3fec8[m Merge branch 'development' of https://github.com/Adnann07/BloodLink into development
+[33m318bf9b[m add login and registration page
+[33m2308243[m fsjdf
+[33m9755f2a[m Merge pull request #3 from Adnann07/new-model
+[33m5c2c980[m Merge branch 'new-model' into development
+[33ma77c7c7[m models added
+[33m6b56aef[m Update Task_Issued_Hasib
+[33m0ca00d2[m Update Task_Issued_Hasib
+[33m8dc3d35[m Update Task_Issued_Hasib
+[33me292dc7[m backend task
+[33mf51b1d3[m resolve conflicts
+[33m5aa8eff[m add bloodlink logo
+[33m1be00fa[m add javascript and groq chatbot
+[33mcafdd6e[m add stylesheet
+[33m032e830[m add ask ai page
+[33m2da4185[m add homepage
+[33m40f29f8[m add auth system and update user model
+[33m2387db7[m updated database schema
+[33maefd5c7[m updated readme
+[33m2d53c0f[m Add Figma prototype link to README
+[33m137dc1f[m added api backend example
+[33m206ea7f[m Update README.md
+[33m5eaeb41[m Update README.md
+[33meb57c29[m Initial commit

@@ -36,7 +36,11 @@ function Navbar() {
           <li><Link to="/donors">Find Donors</Link></li>
           <li><a href="#">Donate</a></li>
           <li><Link to="/askai">Ask AI</Link></li>
+<<<<<<< HEAD
+          <li><Link to="/volunteers">Volunteers</Link></li>
+=======
           <li><a href="#">Volunteers</a></li>
+>>>>>>> 65bbe2c4c508959fc0675cf63aa9ed025e22033e
           <li><Link to="/contact">Contact</Link></li>
         </ul>
         <div className="nav-right">
