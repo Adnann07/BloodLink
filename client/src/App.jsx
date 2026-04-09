@@ -10,6 +10,7 @@ import HospitalDashboard from './pages/HospitalDashboard'
 import Contact from './pages/Contact'
 import MapPage from './pages/MapPage'
 import Volunteers from './pages/Volunteers'
+import RequestBlood from './pages/RequestBlood' 
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/dashboard" element={<DonorDashboard />} />
         <Route path="/hospital/dashboard" element={<HospitalDashboard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/requestblood" element={<RequestBlood />} />
 
         <Route path="/map" element={<MapPage />} />
         <Route path="/volunteers" element={<Volunteers />} />

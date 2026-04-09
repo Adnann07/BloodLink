@@ -34,7 +34,7 @@ function Navbar() {
         <ul className="nav-links">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/donors">Find Donors</Link></li>
-          <li><a href="#">Donate</a></li>
+          <li><Link to="/requestblood">Request Blood</Link></li>
           <li><Link to="/askai">Ask AI</Link></li>
           <li><Link to="/volunteers">Volunteers</Link></li>
           <li><Link to="/contact">Contact</Link></li>

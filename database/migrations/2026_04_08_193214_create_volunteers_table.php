@@ -12,8 +12,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->enum('category', [
+                'Blood Donor Volunteer',
+                'Awareness Campaigner',
+                'Blood Donation Campaign Volunteer',
+                'Healthcare Professional'
+            ]);
             $table->string('phone')->nullable();
             $table->string('city')->nullable();
+            $table->string('availability')->nullable();
+            $table->text('experience')->nullable();
             $table->text('motivation')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
