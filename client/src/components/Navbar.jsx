@@ -38,6 +38,7 @@ function Navbar() {
           <li><Link to="/askai">Ask AI</Link></li>
           <li><Link to="/volunteers">Volunteers</Link></li>
           <li><Link to="/contact">Contact</Link></li>
+          <li><Link to="/map">Find Centers</Link></li>
         </ul>
         <div className="nav-right">
           {isLoggedIn ? (

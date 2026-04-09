@@ -8,7 +8,7 @@ import DonorList from './pages/DonorList'
 import AdminDashboard from './pages/AdminDashboard'
 import HospitalDashboard from './pages/HospitalDashboard'
 import Contact from './pages/Contact'
-
+import MapPage from './pages/MapPage'
 import Volunteers from './pages/Volunteers'
 
 function App() {
@@ -25,6 +25,7 @@ function App() {
         <Route path="/hospital/dashboard" element={<HospitalDashboard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
 
+        <Route path="/map" element={<MapPage />} />
         <Route path="/volunteers" element={<Volunteers />} />
 
 
