@@ -11,6 +11,7 @@ import Contact from './pages/Contact'
 import MapPage from './pages/MapPage'
 import Volunteers from './pages/Volunteers'
 import RequestBlood from './pages/RequestBlood' 
+import Testimonials from './pages/Testimonials'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/requestblood" element={<RequestBlood />} />
 
+        <Route path="/testimonials" element={<Testimonials />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/volunteers" element={<Volunteers />} />
 

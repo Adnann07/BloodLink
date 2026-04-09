@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 
 function Home() {
+  const navigate = useNavigate()
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -33,7 +34,7 @@ function Home() {
           <p>Your one drop of blood can change someone's entire world. Join thousands of heroes making a difference every day.</p>
           <div className="hero-buttons">
             <Link to="/auth"><button className="btn-primary">Donate Now</button></Link>
-            <button className="btn-outline">Learn More</button>
+            <button className="btn-outline" onClick={() => navigate('/testimonials')}>Learn More</button>
           </div>
         </div>
         <div className="hero-logo fade-up">

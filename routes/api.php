@@ -7,6 +7,7 @@ use App\Http\Controllers\DonorController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PublicBloodRequestController;
 use App\Http\Controllers\VolunteerController;
+use App\Http\Controllers\TestimonialController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,12 +34,17 @@ Route::post('/blood-requests', [PublicBloodRequestController::class, 'store']);
 Route::get('/volunteers', [VolunteerController::class, 'index']);
 Route::post('/volunteers', [VolunteerController::class, 'store'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
+// Testimonial routes (public)
+Route::get('/testimonials', [TestimonialController::class, 'index']);
+Route::post('/testimonials', [TestimonialController::class, 'store']);
+
 // Donors list route (public access)
 Route::get('/donors', [UsersController::class, 'getDonors']);
 
 // Admin stats route
 Route::get('/admin/stats', [UsersController::class, 'getAdminStats'])->middleware('auth:sanctum');
 
+// Protected routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
@@ -57,7 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-// Dummy CRUD
+// Dummy CRUD routes
 Route::get('/items', [UsersController::class, 'index']);
 Route::get('/items/{id}', [UsersController::class, 'show']);
 Route::post('/items', [UsersController::class, 'store']);
