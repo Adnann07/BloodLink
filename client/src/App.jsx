@@ -8,11 +8,9 @@ import DonorList from './pages/DonorList'
 import AdminDashboard from './pages/AdminDashboard'
 import HospitalDashboard from './pages/HospitalDashboard'
 import Contact from './pages/Contact'
-<<<<<<< HEAD
-import Volunteers from './pages/Volunteers'
-=======
 
->>>>>>> 65bbe2c4c508959fc0675cf63aa9ed025e22033e
+import Volunteers from './pages/Volunteers'
+
 function App() {
   return (
     <BrowserRouter>
@@ -26,10 +24,10 @@ function App() {
         <Route path="/dashboard" element={<DonorDashboard />} />
         <Route path="/hospital/dashboard" element={<HospitalDashboard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
-<<<<<<< HEAD
+
         <Route path="/volunteers" element={<Volunteers />} />
-=======
->>>>>>> 65bbe2c4c508959fc0675cf63aa9ed025e22033e
+
+
       </Routes>
     </BrowserRouter>
   )
