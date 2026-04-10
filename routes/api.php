@@ -8,6 +8,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PublicBloodRequestController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\InventoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,10 +45,25 @@ Route::get('/donors', [UsersController::class, 'getDonors']);
 // Admin stats route
 Route::get('/admin/stats', [UsersController::class, 'getAdminStats'])->middleware('auth:sanctum');
 
+// Inventory management routes (admin only)
+Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin/inventory')->group(function () {
+    Route::get('/', [InventoryController::class, 'getInventory']);
+    Route::post('/update', [InventoryController::class, 'updateInventory']);
+    Route::post('/record-donation', [InventoryController::class, 'recordDonation']);
+    Route::get('/donations', [InventoryController::class, 'getDonationHistory']);
+    Route::get('/stats', [InventoryController::class, 'getInventoryStats']);
+    Route::get('/donors', [InventoryController::class, 'getDonors']);
+    Route::post('/donor-lookup', [InventoryController::class, 'getDonorByEmail']);
+});
+
+// Public inventory view
+Route::get('/inventory', [InventoryController::class, 'getInventory']);
+
 // Protected routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
+    Route::get('/donor/donations', [InventoryController::class, 'getDonorDonationHistory']);
 
     // Hospital routes
     Route::prefix('hospital')->group(function () {

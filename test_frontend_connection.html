@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Connection Test</title>
+</head>
+<body>
+    <h1>API Connection Test</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function testAPI() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>Testing API connection...</p>';
+            
+            try {
+                // Test inventory endpoint
+                const response = await fetch('http://localhost:8000/api/inventory');
+                const data = await response.json();
+                
+                results.innerHTML = `
+                    <h3>API Test Results:</h3>
+                    <p><strong>Status:</strong> ${response.status}</p>
+                    <p><strong>Inventory Data:</strong> ${data.inventory ? 'Available' : 'Not Available'}</p>
+                    <p><strong>Total Units:</strong> ${data.total_units || 'N/A'}</p>
+                    <p><strong>Connection:</strong> <span style="color: green">SUCCESS</span></p>
+                `;
+                
+                if (data.inventory) {
+                    results.innerHTML += '<h4>Blood Groups:</h4><ul>';
+                    for (const [group, info] of Object.entries(data.inventory)) {
+                        results.innerHTML += `<li>${group}: ${info.available_units} units (${info.status})</li>`;
+                    }
+                    results.innerHTML += '</ul>';
+                }
+                
+            } catch (error) {
+                results.innerHTML = `
+                    <h3>API Test Results:</h3>
+                    <p><strong>Connection:</strong> <span style="color: red">FAILED</span></p>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                    <p><strong>Solution:</strong> Make sure Laravel server is running with: php artisan serve</p>
+                `;
+            }
+        }
+        
+        // Test on page load
+        testAPI();
+    </script>
+</body>
+</html>

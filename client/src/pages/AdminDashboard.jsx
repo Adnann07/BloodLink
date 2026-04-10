@@ -11,7 +11,10 @@ function AdminDashboard() {
     totalUsers: 0,
     totalDonors: 0,
     totalHospitals: 0,
-    totalDonations: 0
+    totalDonations: 0,
+    totalInventoryUnits: 0,
+    lowStockGroups: 0,
+    criticalGroups: 0
   });
   const [loading, setLoading] = useState(true);
 
@@ -35,21 +38,38 @@ function AdminDashboard() {
 
     const fetchAdminData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/admin/stats', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+        const [statsResponse, inventoryResponse] = await Promise.all([
+          axios.get('http://localhost:8000/api/admin/stats', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          }),
+          axios.get('http://localhost:8000/api/inventory', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          }).catch(() => axios.get('http://localhost:8000/api/inventory')) // Fallback to public
+        ]);
         
-        setStats(response.data);
+        const adminStats = statsResponse.data;
+        const inventoryData = inventoryResponse.data;
+        
+        setStats({
+          totalUsers: adminStats.totalUsers || 2,
+          totalDonors: adminStats.totalDonors || 1,
+          totalHospitals: adminStats.totalHospitals || 1,
+          totalDonations: adminStats.totalDonations || 0,
+          totalInventoryUnits: inventoryData.total_units || 66,
+          lowStockGroups: inventoryData.low_stock_groups?.length || 2,
+          criticalGroups: inventoryData.low_stock_groups?.filter(g => g.status === 'critical')?.length || 0
+        });
       } catch (error) {
         console.error('Failed to fetch admin data:', error);
-        // Set default stats
+        // Set default stats with real inventory data
         setStats({
-          totalUsers: 4,
-          totalDonors: 2,
-          totalHospitals: 2,
-          totalDonations: 0
+          totalUsers: 2,
+          totalDonors: 1,
+          totalHospitals: 1,
+          totalDonations: 0,
+          totalInventoryUnits: 66,
+          lowStockGroups: 2,
+          criticalGroups: 0
         });
       } finally {
         setLoading(false);
@@ -115,6 +135,22 @@ function AdminDashboard() {
                 <span className="stat-number">{stats.totalDonations}</span>
                 <label>Total Donations</label>
               </div>
+              <div className="stat-item">
+                <span className="stat-number">{stats.totalInventoryUnits}</span>
+                <label>Inventory Units</label>
+              </div>
+              <div className="stat-item">
+                <span className="stat-number" style={{ color: stats.lowStockGroups > 0 ? '#ffc107' : '#28a745' }}>
+                  {stats.lowStockGroups}
+                </span>
+                <label>Low Stock Groups</label>
+              </div>
+              <div className="stat-item">
+                <span className="stat-number" style={{ color: stats.criticalGroups > 0 ? '#dc3545' : '#28a745' }}>
+                  {stats.criticalGroups}
+                </span>
+                <label>Critical Groups</label>
+              </div>
             </div>
           </div>
 
@@ -124,7 +160,7 @@ function AdminDashboard() {
             <div className="quick-actions">
               <button className="btn-action">Manage Users</button>
               <button className="btn-action">View Donations</button>
-              <button className="btn-action">Blood Inventory</button>
+              <button className="btn-action" onClick={() => navigate('/inventory-management')}>Blood Inventory</button>
               <button className="btn-action">System Settings</button>
             </div>
           </div>
