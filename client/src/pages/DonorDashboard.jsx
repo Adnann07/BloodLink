@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/Dashboard.css';
-import axios from 'axios';
+import api from '../api/axios';
 
 function DonorDashboard() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
- const [donations] = useState([]);
+ const [donations, setDonations] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ function DonorDashboard() {
     // Fetch fresh user data with profile
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/me', {
+        const response = await api.get('/me', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -41,7 +41,27 @@ function DonorDashboard() {
       }
     };
 
+    // Fetch donor's donation history
+    const fetchDonationHistory = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await api.get('/donor/donations', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        // Update donations state with donor's donations
+        setDonations(response.data.data || []);
+      } catch (error) {
+        console.error('Failed to fetch donation history:', error);
+        // Set empty array on error
+        setDonations([]);
+      }
+    };
+
     fetchUserData();
+    fetchDonationHistory();
   }, [navigate]);
 
   const handleLogout = () => {

@@ -10,6 +10,8 @@ class BloodDonation extends Model
     protected $fillable = [
         'donor_id',
         'hospital_id',
+        'blood_group',
+        'units_donated',
         'donation_type',
         'donation_date',
         'donation_time',
@@ -17,11 +19,12 @@ class BloodDonation extends Model
         'volume_ml',
         'notes',
         'location',
+        'recorded_by'
     ];
 
     protected $casts = [
         'donation_date' => 'date',
-        'donation_time' => 'datetime',
+        'donation_time' => 'string',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

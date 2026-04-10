@@ -12,6 +12,7 @@ import MapPage from './pages/MapPage'
 import Volunteers from './pages/Volunteers'
 import RequestBlood from './pages/RequestBlood' 
 import Testimonials from './pages/Testimonials'
+import InventoryManagement from './pages/InventoryManagement'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/dashboard" element={<DonorDashboard />} />
         <Route path="/hospital/dashboard" element={<HospitalDashboard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/inventory-management" element={<InventoryManagement />} />
         <Route path="/requestblood" element={<RequestBlood />} />
 
         <Route path="/testimonials" element={<Testimonials />} />
