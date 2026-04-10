@@ -154,22 +154,17 @@ function AdminDashboard() {
             </div>
           </div>
 
-          {/* Quick Actions */}
-          <div className="dashboard-card actions-card">
-            <h2>Admin Actions</h2>
+          {/* Blood Inventory Action */}
+          <div className="dashboard-card actions-card" style={{ gridColumn: 'span 2' }}>
+            <h2>Blood Inventory Management</h2>
             <div className="quick-actions">
-              <button className="btn-action">Manage Users</button>
-              <button className="btn-action">View Donations</button>
-              <button className="btn-action" onClick={() => navigate('/inventory-management')}>Blood Inventory</button>
-              <button className="btn-action">System Settings</button>
-            </div>
-          </div>
-
-          {/* Recent Activity */}
-          <div className="dashboard-card activity-card">
-            <h2>System Activity</h2>
-            <div className="activity-list">
-              <p className="no-activity">Admin dashboard - System monitoring and management</p>
+              <button 
+                className="btn-action" 
+                onClick={() => navigate('/inventory-management')}
+                style={{ background: '#c0392b', color: 'white', fontSize: '1.1rem', padding: '1rem 2rem' }}
+              >
+                Go to Blood Inventory
+              </button>
             </div>
           </div>
         </div>

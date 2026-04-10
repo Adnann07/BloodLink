@@ -120,23 +120,6 @@ function DonorDashboard() {
                 <span className="stat-number">{donations.length}</span>
                 <label>Total Donations</label>
               </div>
-              <div className="stat-item">
-                <span className="stat-number">0</span>
-                <label>Lives Saved (Est.)</label>
-              </div>
-              <div className="stat-item">
-                <span className="stat-number">0</span>
-                <label>Points Earned</label>
-              </div>
-            </div>
-          </div>
-
-          {/* Next Donation Card */}
-          <div className="dashboard-card next-donation-card">
-            <h2>Next Eligible Donation</h2>
-            <div className="next-donation">
-              <p className="eligible-text">You are eligible to donate now!</p>
-              <button className="btn-donate">Schedule Donation</button>
             </div>
           </div>
 
@@ -158,16 +141,6 @@ function DonorDashboard() {
             </div>
           </div>
 
-          {/* Quick Actions */}
-          <div className="dashboard-card actions-card">
-            <h2>Quick Actions</h2>
-            <div className="quick-actions">
-              <button className="btn-action">Edit Profile</button>
-              <button className="btn-action">View Certificates</button>
-              <button className="btn-action">Find Blood Banks</button>
-              <button className="btn-action">Contact Support</button>
-            </div>
-          </div>
         </div>
       </div>
     </div>

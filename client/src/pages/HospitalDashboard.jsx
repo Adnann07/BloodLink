@@ -7,11 +7,7 @@ import axios from 'axios';
 function HospitalDashboard() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
- // eslint-disable-next-line no-unused-vars
-const [stats, setStats] = useState({}); 
-
-// eslint-disable-next-line no-unused-vars
-const [recentActivities, setRecentActivities] = useState([]);
+  const [inventory, setInventory] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -32,20 +28,24 @@ const [recentActivities, setRecentActivities] = useState([]);
       return;
     }
     
-    // Fetch fresh user data with profile
+    // Fetch fresh user data with profile and inventory
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/me', {
+        const userResponse = await axios.get('http://localhost:8000/api/me', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
         
         // Update localStorage and state with fresh data
-        localStorage.setItem('user', JSON.stringify(response.data));
-        setUser(response.data);
+        localStorage.setItem('user', JSON.stringify(userResponse.data));
+        setUser(userResponse.data);
+        
+        // Fetch blood inventory
+        const inventoryResponse = await axios.get('http://localhost:8000/api/inventory');
+        setInventory(inventoryResponse.data.inventory || {});
       } catch (error) {
-        console.error('Failed to fetch user data:', error);
+        console.error('Failed to fetch data:', error);
       } finally {
         setLoading(false);
       }
@@ -90,93 +90,39 @@ const [recentActivities, setRecentActivities] = useState([]);
             </div>
           </div>
 
-          {/* Blood Bank Statistics */}
-          <div className="dashboard-card stats-card">
-            <h2>Blood Bank Statistics</h2>
-            <div className="stats-grid">
-              <div className="stat-item">
-                <span className="stat-number">{stats?.total_donors || 0}</span>
-                <label>Total Donors</label>
-              </div>
-              <div className="stat-item">
-                <span className="stat-number">{stats?.recent_donations || 0}</span>
-                <label>Recent Donations (30 days)</label>
-              </div>
-              <div className="stat-item">
-                <span className="stat-number">{stats?.blood_requests || 0}</span>
-                <label>Pending Blood Requests</label>
-              </div>
-            </div>
-          </div>
-
           {/* Blood Groups Availability */}
-          <div className="dashboard-card blood-availability-card">
+          <div className="dashboard-card blood-availability-card" style={{ gridColumn: 'span 2' }}>
             <h2>Blood Groups Availability</h2>
             <div className="blood-groups-grid">
-              {stats?.available_blood_groups && Object.entries(stats.available_blood_groups).map(([group, data]) => (
-                <div key={group} className="blood-group-item">
-                  <span className="blood-type">{group}</span>
-                  <div className="blood-stats">
-                    <span className="available">Available: {data.available}</span>
-                    <span className="recent">Recent: {data.recent_donations}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="dashboard-card actions-card">
-            <h2>Quick Actions</h2>
-            <div className="quick-actions">
-              <button className="btn-action btn-primary">Request Blood</button>
-              <button className="btn-action">View Donors</button>
-              <button className="btn-action">Manage Requests</button>
-              <button className="btn-action">Edit Profile</button>
-            </div>
-          </div>
-
-          {/* Recent Activities */}
-          <div className="dashboard-card activity-card">
-            <h2>Recent Activities</h2>
-            <div className="activity-list">
-              {recentActivities.length === 0 ? (
-                <p className="no-activity">No recent activities</p>
-              ) : (
-                recentActivities.map((activity, index) => (
-                  <div key={index} className="activity-item">
-                    <span className="activity-date">{new Date(activity.created_at).toLocaleDateString()}</span>
-                    <span className="activity-type">{activity.type === 'donation' ? 'Blood Donation' : 'Blood Request'}</span>
-                    <span className="activity-status">{activity.status}</span>
-                    {activity.blood_group && (
-                      <span className="blood-type-small">{activity.blood_group}</span>
-                    )}
+              {Object.entries(inventory).length > 0 ? (
+                Object.entries(inventory).map(([group, data]) => (
+                  <div key={group} className="blood-group-item" style={{ 
+                    padding: '1rem', 
+                    border: '1px solid #ddd', 
+                    borderRadius: '8px',
+                    background: data.status === 'critical' ? '#fee' : data.status === 'low' ? '#ffeaa7' : '#f0f8ff'
+                  }}>
+                    <span className="blood-type" style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#c0392b' }}>{group}</span>
+                    <div className="blood-stats" style={{ marginTop: '0.5rem' }}>
+                      <span className="available" style={{ display: 'block', fontWeight: 'bold' }}>
+                        {data.available_units} units
+                      </span>
+                      <span className="status" style={{ 
+                        display: 'block', 
+                        fontSize: '0.85rem',
+                        color: data.status === 'critical' ? '#dc3545' : data.status === 'low' ? '#ffc107' : '#28a745'
+                      }}>
+                        Status: {data.status}
+                      </span>
+                    </div>
                   </div>
                 ))
+              ) : (
+                <p>No inventory data available</p>
               )}
             </div>
           </div>
 
-          {/* Urgent Requests */}
-          <div className="dashboard-card urgent-card">
-            <h2>Urgent Blood Requests</h2>
-            <div className="urgent-list">
-              {recentActivities.filter(a => a.type === 'request' && a.urgency_level === 'critical').length === 0 ? (
-                <p className="no-urgent">No urgent requests at the moment</p>
-              ) : (
-                recentActivities
-                  .filter(a => a.type === 'request' && a.urgency_level === 'critical')
-                  .map((request, index) => (
-                    <div key={index} className="urgent-item">
-                      <span className="urgent-type">{request.blood_group}</span>
-                      <span className="urgent-units">{request.units_needed} units</span>
-                      <span className="urgent-patient">{request.patient_name}</span>
-                      <button className="btn-urgent">Respond</button>
-                    </div>
-                  ))
-              )}
-            </div>
-          </div>
         </div>
       </div>
     </div>
