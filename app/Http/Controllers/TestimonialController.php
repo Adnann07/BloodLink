@@ -20,7 +20,7 @@ class TestimonialController extends Controller
         ]);
         // Save the validated testimonial data to the database
         $testimonial = Testimonial::create($validated);
-        // Return the created testimonial as JSON with 201 Created HTTP status
+        // Return the created testimonial as JSON with 201 Created HTTP 
         return response()->json($testimonial, 201);
     }
 }
