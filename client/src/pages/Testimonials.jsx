@@ -227,5 +227,5 @@ function Testimonials() {
     </div>
   );
 }
-
+// Exports the Testimonials component to be used in the app's route configuration
 export default Testimonials;
